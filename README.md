@@ -53,7 +53,7 @@ npm run dev
 
 ## Why I built it
 
-I was tired of health apps that made me feel worse, not better. NamNamScore is the app I wished existed — one that makes you laugh instead of feeling judged. Built in a few days as a fun experiment in prompt engineering and building in public.
+I built this from the idea of mindful eating — "you are what you eat" — but I also believe eating is an emotional choice, not just a math problem. The goal was a fun "sour judge" that nudges people toward healthier eating through humor instead of guilt.
 
 ---
 
