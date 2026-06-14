@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NamNamScore 🤤
 
-## Getting Started
+> An AI meal companion that scores your food by **vibe**, not calories.
 
-First, run the development server:
+**Live demo → [namnamscore.vercel.app](https://namnamscore.vercel.app)**
+
+---
+
+## What is this?
+
+Every calorie-tracking app turns eating into cold math and a guilt spiral. You snap a photo, get a number, feel bad, and delete the app.
+
+NamNamScore takes a different angle: **food is emotion, not math.**
+
+Snap a photo of your meal, and an AI character named **Nam** reacts like a witty friend — celebrating healthy choices with playful hype, and softly roasting indulgent ones with dark humor. Instead of a calorie count, you get a **Vibe Score** (0–100).
+
+## How it works
+
+1. 📸 Snap or upload a meal photo
+2. 🤖 Gemini Vision analyzes it
+3. ✨ Get your Vibe Score + a one-liner from Nam
+
+## The Vibe Score tiers
+
+| Score | Label | Vibe |
+|-------|-------|------|
+| 90–100 | ✨ Main Character Energy | Intentional, colorful, you're thriving |
+| 70–89 | 🌿 Cozy Mode | Warm, home-cooked, has effort |
+| 50–69 | 🤷 It Is What It Is | Functional fuel |
+| 30–49 | 🍔 Comfort Crew | Indulgent, emotional support food |
+| 0–29 | 😵‍💫 Survival Mode | 3am energy, chaotic, gave up |
+
+A salad might get *"Vegetables in formation. Therapy is working."* ✨
+A pizza might get *"This pizza saw your gym membership and laughed."* 🍔
+
+## Tech stack
+
+- **Frontend:** Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **AI:** Gemini Vision API (`@google/generative-ai`)
+- **Deployment:** Vercel
+
+The real product lives in the prompt — a 5-tier scoring system with score-dependent tone shifts (celebrate the healthy, roast the indulgent), anti-inflation rules, and few-shot humor examples.
+
+## Run locally
 
 ```bash
+git clone https://github.com/yuezhang87/namnamscore.git
+cd namnamscore
+npm install
+# Add your GEMINI_API_KEY to .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Why I built it
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+I was tired of health apps that made me feel worse, not better. NamNamScore is the app I wished existed — one that makes you laugh instead of feeling judged. Built in a few days as a fun experiment in prompt engineering and building in public.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Built by [Yue](https://github.com/yuezhang87) · Powered by Gemini Vision*
