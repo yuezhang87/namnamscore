@@ -176,10 +176,6 @@ export default function Home() {
           </div>
         )}
       </div>
-
-      <p className="absolute bottom-6 text-xs text-gray-400">
-        Built by Yue · Day 4 of 9 🚀
-      </p>
     </main>
   );
 }
