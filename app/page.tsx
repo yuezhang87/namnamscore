@@ -20,13 +20,6 @@ function scoreHexColor(score: number) {
   return "#dc2626";
 }
 
-function scoreTailwindColor(score: number) {
-  if (score >= 90) return "text-purple-600";
-  if (score >= 70) return "text-green-600";
-  if (score >= 50) return "text-gray-600";
-  if (score >= 30) return "text-orange-600";
-  return "text-red-600";
-}
 
 export default function Home() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -211,15 +204,7 @@ export default function Home() {
         <h1 className="text-4xl font-medium mb-2 text-gray-900">NamNamScore</h1>
         <p className="text-lg text-gray-500 mb-8">Your meal, scored 🤤</p>
 
-        {isProcessing && !imageUrl && (
-          <div className="border-2 border-dashed border-amber-300 rounded-2xl p-12 bg-amber-50">
-            <p className="text-5xl mb-4">⏳</p>
-            <p className="text-lg font-medium text-gray-700">
-              Processing your photo...
-            </p>
-          </div>
-        )}
-
+        {/* Upload picker */}
         {!imageUrl && !isProcessing && (
           <label className="block cursor-pointer">
             <input
@@ -240,100 +225,70 @@ export default function Home() {
           </label>
         )}
 
-        {imageUrl && (
+        {/* Compressing */}
+        {isProcessing && (
+          <div className="border-2 border-dashed border-amber-300 rounded-2xl p-12 bg-amber-50">
+            <p className="text-5xl mb-4">⏳</p>
+            <p className="text-lg font-medium text-gray-700">
+              Processing your photo...
+            </p>
+          </div>
+        )}
+
+        {/* Analyzing */}
+        {isAnalyzing && (
+          <div className="bg-purple-50 rounded-2xl p-12">
+            <p className="text-2xl mb-2">🤖</p>
+            <p className="text-gray-700">Nam is thinking...</p>
+          </div>
+        )}
+
+        {/* Error */}
+        {error && (
           <div>
+            <div className="bg-red-50 rounded-2xl p-6 mb-4">
+              <p className="text-red-700">{error}</p>
+            </div>
+            <button
+              onClick={reset}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium transition"
+            >
+              Try another
+            </button>
+          </div>
+        )}
+
+        {/* Generating card */}
+        {result && isGeneratingCard && !cardDataUrl && (
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-400 py-12">
+            <span className="animate-spin">⏳</span>
+            Creating share card…
+          </div>
+        )}
+
+        {/* Card is the result — buttons sit below it, outside the image */}
+        {cardDataUrl && result && (
+          <div className="flex flex-col gap-3">
             <img
-              src={imageUrl}
-              alt="Your meal"
-              className="w-full rounded-2xl mb-4"
+              src={cardDataUrl}
+              alt="Your NamNamScore card"
+              className="w-full rounded-2xl shadow-sm"
             />
-
-            {isAnalyzing && (
-              <div className="bg-purple-50 rounded-2xl p-6 mb-4">
-                <p className="text-2xl mb-2">🤖</p>
-                <p className="text-gray-700">Nam is thinking...</p>
-              </div>
+            {canNativeShare ? (
+              <button
+                onClick={handleShare}
+                className="w-full bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-white font-semibold px-4 py-3 rounded-2xl transition flex items-center justify-center gap-2"
+              >
+                <span>📤</span> Share / Save to Camera Roll
+              </button>
+            ) : (
+              <button
+                onClick={downloadCard}
+                className="w-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-semibold px-4 py-3 rounded-2xl transition flex items-center justify-center gap-2"
+              >
+                <span>💾</span> Download image
+              </button>
             )}
-
-            {error && (
-              <div className="bg-red-50 rounded-2xl p-6 mb-4">
-                <p className="text-red-700">{error}</p>
-              </div>
-            )}
-
-            {result && (
-              <div className="text-left mb-4">
-                <div className="text-center mb-4">
-                  <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">
-                    Vibe Score
-                  </p>
-                  <p
-                    className={`text-6xl font-medium ${scoreTailwindColor(
-                      result.vibe_score
-                    )}`}
-                  >
-                    {result.vibe_score}
-                  </p>
-                  <p className="text-lg font-medium text-gray-800 mt-2">
-                    {result.emoji} {result.label}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">{result.caption}</p>
-                </div>
-
-                <div className="flex gap-2 items-start mt-6">
-                  <div className="w-9 h-9 rounded-full bg-amber-300 flex-shrink-0 flex items-center justify-center text-lg">
-                    🤖
-                  </div>
-                  <div className="bg-gray-100 px-4 py-3 rounded-2xl rounded-tl-sm flex-1">
-                    <p className="text-xs text-gray-500 font-medium mb-1">
-                      Nam
-                    </p>
-                    <p className="text-gray-800 leading-relaxed">
-                      {result.roast}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Share card preview — appears once generated; long-press on mobile saves to camera roll */}
-                <div className="mt-6">
-                  {isGeneratingCard && (
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-400 py-4">
-                      <span className="animate-spin">⏳</span>
-                      Creating share card…
-                    </div>
-                  )}
-
-                  {cardDataUrl && (
-                    <>
-                      {/* Long-press on mobile to save directly from here */}
-                      <img
-                        src={cardDataUrl}
-                        alt="Share card preview"
-                        className="w-full rounded-2xl shadow-sm mb-3"
-                      />
-                      {canNativeShare ? (
-                        // One button on mobile — share sheet includes "Save Image"
-                        <button
-                          onClick={handleShare}
-                          className="w-full bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-white font-semibold px-4 py-3 rounded-2xl transition flex items-center justify-center gap-2"
-                        >
-                          <span>📤</span> Share / Save to Camera Roll
-                        </button>
-                      ) : (
-                        // Desktop fallback
-                        <button
-                          onClick={downloadCard}
-                          className="w-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-semibold px-4 py-3 rounded-2xl transition flex items-center justify-center gap-2"
-                        >
-                          <span>💾</span> Download image
-                        </button>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            )}
-
             <button
               onClick={reset}
               className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-medium transition"
